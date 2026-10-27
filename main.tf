@@ -7,5 +7,15 @@ resource "azuread_application_app_role" "application_app_roles" {
   display_name         = each.value.display_name
   role_id              = each.value.role_id
   value                = each.value.value
+
+  dynamic "timeouts" {
+    for_each = each.value.timeouts != null ? [each.value.timeouts] : []
+    content {
+      create = timeouts.value.create
+      delete = timeouts.value.delete
+      read   = timeouts.value.read
+      update = timeouts.value.update
+    }
+  }
 }
 
